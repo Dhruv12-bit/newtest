@@ -112,11 +112,12 @@ textarea{min-height:110px}
 <!-- FIREBASE & APP LOGIC -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+  import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
   import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
+  // CORRECTED API KEY HERE:
   const firebaseConfig = {
-    apiKey: "AIzaSyBb4QY0hPwEPxoOOBcHWugKPznzfBSmF1M",
+    apiKey: "AIzaSyBb4QY0hPwEPxo0OBcHWugKPznzfBSmF1M",
     authDomain: "samarth-pg.firebaseapp.com",
     projectId: "samarth-pg",
     storageBucket: "samarth-pg.firebasestorage.app",
@@ -188,7 +189,11 @@ textarea{min-height:110px}
     }
   });
 
-  $('btnLogin').onclick = () => signInWithPopup(auth, provider);
+  // REDIRECT LOGIN HANDLER:
+  $('btnLogin').onclick = () => {
+    signInWithRedirect(auth, provider).catch(err => alert("Error: " + err.message));
+  };
+  
   $('btnLogout').onclick = () => signOut(auth);
 
   // App UI Logic
