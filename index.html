@@ -112,7 +112,7 @@ textarea{min-height:110px}
 <!-- FIREBASE & APP LOGIC -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-  import { getAuth, signInWithRedirect, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
   import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
 
   // CORRECTED API KEY HERE:
@@ -189,9 +189,12 @@ textarea{min-height:110px}
     }
   });
 
-  // REDIRECT LOGIN HANDLER:
+  // POPUP LOGIN HANDLER (Fixes the redirect loop):
   $('btnLogin').onclick = () => {
-    signInWithRedirect(auth, provider).catch(err => alert("Error: " + err.message));
+    signInWithPopup(auth, provider).catch(err => {
+      console.error("Login failed:", err);
+      alert("Error: " + err.message);
+    });
   };
   
   $('btnLogout').onclick = () => signOut(auth);
